@@ -1,7 +1,9 @@
-<button
-  class="puzzle-item"
-  *ngFor="let item of puzzleItems"
-  id="item{{ item.row }}{{ item.column }}"
->
-  {{ item.value }}
-</button>
+<div class="puzzle-container">
+  <button
+    class="puzzle-item"
+    *ngFor="let item of puzzleItems"
+    id="item{{ item.row }}{{ item.column }}"
+  >
+    {{ item.value }}
+  </button>
+</div>

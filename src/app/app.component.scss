@@ -1,0 +1,19 @@
+$content-max-width: 600px;
+
+.content-container {
+  margin: 0 auto;
+  max-width: $content-max-width;
+
+  display: grid;
+  grid-template-columns: auto;
+  gap: 1em;
+
+  .title,
+  .new-game {
+    justify-self: center;
+  }
+
+  .new-game {
+    padding: 1em;
+  }
+}

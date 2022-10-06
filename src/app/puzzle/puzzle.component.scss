@@ -1,0 +1,11 @@
+.puzzle-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5em;
+
+  .puzzle-item {
+    aspect-ratio: 1;
+    cursor: pointer;
+    font-size: 3rem;
+  }
+}
