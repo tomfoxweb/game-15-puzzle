@@ -16,6 +16,9 @@ describe('AppComponent', () => {
   });
 
   it(`should have document title '${environment.documentTitle}'`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    app.ngOnInit();
     expect(document.title).toEqual(environment.documentTitle);
   });
 
