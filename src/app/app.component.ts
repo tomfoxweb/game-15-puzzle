@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'game-15-puzzle';
+export class AppComponent implements OnInit {
+  title = environment.title;
+  buttonNewGameCaption = environment.buttonNewGameCaption;
+
+  constructor(private documentTitle: Title) {}
+
+  ngOnInit(): void {
+    this.documentTitle.setTitle(this.title);
+  }
 }
