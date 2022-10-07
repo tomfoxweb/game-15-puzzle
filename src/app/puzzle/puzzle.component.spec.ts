@@ -22,7 +22,9 @@ describe('PuzzleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  const EXPECTED_BUTTON_COUNT = Core.ROW_COUNT * Core.COLUMN_COUNT;
+  const EXPECTED_ROW_COUNT = 4;
+  const EXPECTED_COLUMN_COUNT = 4;
+  const EXPECTED_BUTTON_COUNT = 16;
 
   it(`should render ${EXPECTED_BUTTON_COUNT} puzzle buttons`, () => {
     const compiled = fixture.nativeElement as HTMLElement;
@@ -33,8 +35,8 @@ describe('PuzzleComponent', () => {
   it(`should set puzzle items textContent in order`, () => {
     const compiled = fixture.nativeElement as HTMLElement;
     let value: CellValue = 0;
-    for (let row: Row = 0; row < Core.ROW_COUNT; row++) {
-      for (let col: Column = 0; col < Core.COLUMN_COUNT; col++) {
+    for (let row = 0; row < EXPECTED_ROW_COUNT; row++) {
+      for (let col = 0; col < EXPECTED_COLUMN_COUNT; col++) {
         const expectedId = `item${row}${col}`;
         const item = compiled.querySelector(`#${expectedId}`);
         expect(item).toBeTruthy();
@@ -48,8 +50,8 @@ describe('PuzzleComponent', () => {
     spyOn(component, 'setCell');
     component.ngOnInit();
     let value: CellValue = 0;
-    for (let row: Row = 0; row < Core.ROW_COUNT; row++) {
-      for (let col: Column = 0; col < Core.COLUMN_COUNT; col++) {
+    for (let row = 0; row < EXPECTED_ROW_COUNT; row++) {
+      for (let col = 0; col < EXPECTED_COLUMN_COUNT; col++) {
         expect(component.setCell).toHaveBeenCalledWith(
           jasmine.objectContaining({
             row: row as Row,
