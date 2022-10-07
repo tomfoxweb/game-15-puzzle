@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
+import { PuzzleComponent } from './puzzle/puzzle.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [AppComponent, PuzzleComponent],
     }).compileComponents();
   });
 
