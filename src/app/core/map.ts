@@ -22,3 +22,10 @@ export interface Cell {
 export function positionToIndex(row: Row, column: Column): number {
   return row * ROW_COUNT + column;
 }
+
+export const enum Direction {
+  UP,
+  RIGHT,
+  DOWN,
+  LEFT,
+}

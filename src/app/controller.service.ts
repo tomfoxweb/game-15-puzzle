@@ -31,6 +31,6 @@ export class ControllerService {
     if (this.view === undefined) {
       throw new NullViewableError();
     }
-    this.model.newGame();
+    this.model.newGame(1000);
   }
 }

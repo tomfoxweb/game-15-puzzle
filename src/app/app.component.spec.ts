@@ -4,6 +4,14 @@ import { environment } from '../environments/environment';
 import { PuzzleComponent } from './puzzle/puzzle.component';
 
 describe('AppComponent', () => {
+  beforeAll(() => {
+    environment.isTest = true;
+  });
+
+  afterAll(() => {
+    environment.isTest = false;
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent, PuzzleComponent],
