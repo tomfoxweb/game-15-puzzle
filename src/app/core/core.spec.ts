@@ -6,6 +6,8 @@ import { RandomTest } from './random-test';
 
 class TestViewable implements Viewable {
   setCell(cell: Cell): void {}
+
+  clickCell(row: Row, column: Column): void {}
 }
 
 describe('Game Core New Game', () => {

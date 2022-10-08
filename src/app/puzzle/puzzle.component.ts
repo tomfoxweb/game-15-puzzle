@@ -3,8 +3,10 @@ import { ControllerService } from '../controller.service';
 import {
   Cell,
   CellValues,
+  Column,
   ColumnValues,
   positionToIndex,
+  Row,
   RowValues,
 } from '../core/map';
 import { Viewable } from '../core/viewable';
@@ -39,5 +41,9 @@ export class PuzzleComponent implements OnInit, Viewable {
   setCell(cell: Readonly<Cell>): void {
     const index = positionToIndex(cell.row, cell.column);
     this.puzzleItems[index] = cell;
+  }
+
+  clickCell(row: Row, column: Column): void {
+    this.controller.clickCell(row, column);
   }
 }

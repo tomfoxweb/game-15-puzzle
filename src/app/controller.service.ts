@@ -6,6 +6,7 @@ import { Modellable } from './core/modellable';
 import { RandomLodash } from './core/random-lodash';
 import { environment } from 'src/environments/environment';
 import { ModelTestView } from './model-test';
+import { Column, Row } from './core/map';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +33,9 @@ export class ControllerService {
       throw new NullViewableError();
     }
     this.model.newGame(1000);
+  }
+
+  clickCell(row: Row, column: Column): void {
+    this.model.clickCell(row, column);
   }
 }
