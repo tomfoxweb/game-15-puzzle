@@ -1,5 +1,7 @@
 <div class="content-container">
   <h1 class="title">{{ title }}</h1>
-  <button class="new-game">{{ buttonNewGameCaption }}</button>
-  <app-puzzle></app-puzzle>
+  <button class="new-game" (click)="puzzle.newGame()">
+    {{ buttonNewGameCaption }}
+  </button>
+  <app-puzzle #puzzle></app-puzzle>
 </div>

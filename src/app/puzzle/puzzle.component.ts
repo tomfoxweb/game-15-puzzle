@@ -32,6 +32,10 @@ export class PuzzleComponent implements OnInit, Viewable {
     this.controller.newGame();
   }
 
+  newGame(): void {
+    this.controller.newGame();
+  }
+
   setCell(cell: Readonly<Cell>): void {
     const index = positionToIndex(cell.row, cell.column);
     this.puzzleItems[index] = cell;
