@@ -7,6 +7,7 @@ export const environment = {
   documentTitle: 'Game 15 Puzzles',
   title: 'Game 15 Puzzles',
   buttonNewGameCaption: 'New Game',
+  isTest: false,
 };
 
 /*

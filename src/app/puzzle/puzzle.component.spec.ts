@@ -1,12 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Core } from '../core/core';
-import { Cell, CellValue, Column, Row } from '../core/map';
+import * as Lodash from 'lodash';
+import { environment } from 'src/environments/environment';
+
+import { CELLS_COUNT, CellValue, Column, Row } from '../core/map';
+import { ModelTestView } from '../model-test';
 
 import { PuzzleComponent } from './puzzle.component';
 
 describe('PuzzleComponent', () => {
   let component: PuzzleComponent;
   let fixture: ComponentFixture<PuzzleComponent>;
+
+  beforeAll(() => {
+    environment.isTest = true;
+  });
+
+  afterAll(() => {
+    environment.isTest = false;
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -32,34 +43,31 @@ describe('PuzzleComponent', () => {
     expect(puzzleButtons?.length).toEqual(EXPECTED_BUTTON_COUNT);
   });
 
-  it(`should set puzzle items textContent in order`, () => {
-    const compiled = fixture.nativeElement as HTMLElement;
-    let value: CellValue = 0;
-    for (let row = 0; row < EXPECTED_ROW_COUNT; row++) {
-      for (let col = 0; col < EXPECTED_COLUMN_COUNT; col++) {
-        const expectedId = `item${row}${col}`;
-        const item = compiled.querySelector(`#${expectedId}`);
-        expect(item).toBeTruthy();
-        expect(item!.textContent?.trim()).toEqual(value.toString());
-        value++;
-      }
-    }
+  it(`should call model setView and newGame on ngOnInit`, () => {
+    spyOn(component.controller, 'setView');
+    spyOn(component.controller, 'newGame');
+    component.ngOnInit();
+    expect(component.controller.setView).toHaveBeenCalledWith(component);
+    expect(component.controller.newGame).toHaveBeenCalled();
   });
 
-  it(`should load puzzle values from Core`, () => {
+  it(`should set all ${EXPECTED_BUTTON_COUNT} after call newGame on ngOnInit`, () => {
     spyOn(component, 'setCell');
+    const modelTest = ModelTestView.getInstance();
+    const values = Lodash.shuffle(Lodash.range(0, CELLS_COUNT));
+    modelTest.values = [...values];
     component.ngOnInit();
-    let value: CellValue = 0;
+    let index = 0;
     for (let row = 0; row < EXPECTED_ROW_COUNT; row++) {
       for (let col = 0; col < EXPECTED_COLUMN_COUNT; col++) {
         expect(component.setCell).toHaveBeenCalledWith(
           jasmine.objectContaining({
             row: row as Row,
             column: col as Column,
-            value: value as CellValue,
+            value: values[index] as CellValue,
           })
         );
-        value++;
+        index++;
       }
     }
   });

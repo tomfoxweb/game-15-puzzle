@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Core } from '../core/core';
-import { Cell, ColumnValues, positionToIndex, RowValues } from '../core/map';
+import { ControllerService } from '../controller.service';
+import {
+  Cell,
+  CellValues,
+  ColumnValues,
+  positionToIndex,
+  RowValues,
+} from '../core/map';
 import { Viewable } from '../core/viewable';
 
 @Component({
@@ -10,20 +16,20 @@ import { Viewable } from '../core/viewable';
 })
 export class PuzzleComponent implements OnInit, Viewable {
   puzzleItems: Cell[] = [];
-  private core: Core;
 
-  constructor() {
-    this.core = new Core(this);
-  }
+  constructor(public controller: ControllerService) {}
 
   ngOnInit(): void {
+    const valueIterator = CellValues[Symbol.iterator]();
     for (const row of RowValues) {
       for (const column of ColumnValues) {
-        const cell: Cell = { row, column, value: 0 };
+        const value = valueIterator.next().value;
+        const cell: Cell = { row, column, value };
         this.puzzleItems.push(cell);
       }
     }
-    this.core.newGame();
+    this.controller.setView(this);
+    this.controller.newGame();
   }
 
   setCell(cell: Readonly<Cell>): void {

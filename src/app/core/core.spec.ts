@@ -1,6 +1,9 @@
+import { NullViewableError } from './game-error';
 import { Core } from './core';
 import { Row, Column, Cell, CellValue } from './map';
 import { Viewable } from './viewable';
+import { Randomable } from './randomable';
+import { RandomTest } from './random-test';
 
 class TestViewable implements Viewable {
   setCell(cell: Cell): void {}
@@ -11,19 +14,27 @@ describe('Game Core', () => {
   const COLUMN_COUNT = 4;
   let core: Core;
   let testingView: Viewable;
+  let testingRandom: Randomable;
 
   beforeEach(async () => {
     testingView = new TestViewable();
-    core = new Core(testingView);
+    testingRandom = new RandomTest();
+    core = new Core(testingRandom);
     spyOn(testingView, 'setCell');
   });
 
+  it('should throw NullViewError in newGame if view === null', () => {
+    expect(core.newGame.bind(core)).toThrowError(NullViewableError);
+  });
+
   it('should call 16 view.setCell methods in newGame method', () => {
+    core.setView(testingView);
     core.newGame();
     expect(testingView.setCell).toHaveBeenCalledTimes(16);
   });
 
   it('should set all Row Column Cells in newGame method', () => {
+    core.setView(testingView);
     core.newGame();
     let value = 0;
     for (let row = 0; row < ROW_COUNT; row++) {
