@@ -1,5 +1,5 @@
 import { NullViewableError } from './core/game-error';
-import { Cell, ColumnValues, RowValues } from './core/map';
+import { Cell, Column, ColumnValues, Row, RowValues } from './core/map';
 import { Modellable } from './core/modellable';
 import { Viewable } from './core/viewable';
 
@@ -9,6 +9,8 @@ export class ModelTestView implements Modellable {
   values: number[] = [];
 
   private constructor() {}
+
+  clickCell(row: Row, column: Column): void {}
 
   static getInstance(): ModelTestView {
     if (ModelTestView.instance === undefined) {
