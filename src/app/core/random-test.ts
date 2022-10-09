@@ -1,10 +1,14 @@
+import { Direction } from './map';
 import { Randomable } from './randomable';
 
 export class RandomTest implements Randomable {
-  values: number[] = [];
-  valuesIndex: number = 0;
+  dir: Direction[] = [];
+  dirIndex: number = 0;
+  actualDir: Direction[][] = [];
+  expectedDir: Direction[][] = [];
 
-  randomInteger(min: number, max: number): number {
-    return this.values[this.valuesIndex++];
+  randomDirection(directions: Direction[]): Direction {
+    this.actualDir.push([...directions]);
+    return this.dir[this.dirIndex++];
   }
 }

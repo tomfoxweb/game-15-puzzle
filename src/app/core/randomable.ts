@@ -1,3 +1,5 @@
+import { Direction } from './map';
+
 export interface Randomable {
-  randomInteger(min: number, max: number): number;
+  randomDirection(directions: Direction[]): Direction;
 }

@@ -5,11 +5,9 @@ import {
   CellValues,
   Column,
   ColumnValues,
-  COLUMN_COUNT,
   Direction,
   Row,
   RowValues,
-  ROW_COUNT,
 } from './map';
 import { Viewable } from './viewable';
 import { Randomable } from './randomable';
@@ -67,7 +65,6 @@ export class Core implements Modellable {
     for (const row of RowValues) {
       for (const column of ColumnValues) {
         const value = valueIterator.next().value;
-        const cell: Cell = { row, column, value };
         if (this.grid[row][column].value !== value) {
           return false;
         }
@@ -97,23 +94,37 @@ export class Core implements Modellable {
         this.grid[row][column] = cell;
       }
     }
-    this.freeCell = { row: 0, column: 0, value: 0 };
+    this.freeCell = { row: 3, column: 3, value: 0 };
   }
 
   private shuffleGrid(shuffleCount: number): void {
     let freeCell: Cell = { row: 3, column: 3, value: 0 };
-    const f = new Map<number, number>();
     for (let i = 0; i < shuffleCount; i++) {
-      const direction = this.randomizer.randomInteger(0, 3) as Direction;
+      const directions = this.findDirections();
+      const direction = this.randomizer.randomDirection(directions);
       freeCell = this.moveCell(freeCell, direction);
+      this.freeCell = { ...freeCell };
     }
-    this.freeCell = { ...freeCell };
+  }
+
+  private findDirections(): Direction[] {
+    const directions: Direction[] = [];
+    if (this.freeCell.row !== 0) {
+      directions.push(Direction.UP);
+    }
+    if (this.freeCell.column !== 3) {
+      directions.push(Direction.RIGHT);
+    }
+    if (this.freeCell.row !== 3) {
+      directions.push(Direction.DOWN);
+    }
+    if (this.freeCell.column !== 0) {
+      directions.push(Direction.LEFT);
+    }
+    return directions;
   }
 
   private moveCell(cell: Cell, direction: Direction): Cell {
-    if (!this.isSwappawableDirection(cell, direction)) {
-      return cell;
-    }
     let aCell = { ...cell };
     let bCell = { ...cell };
     switch (direction) {
@@ -138,19 +149,6 @@ export class Core implements Modellable {
     bCell.value = aCell.value;
 
     return bCell;
-  }
-
-  private isSwappawableDirection(cell: Cell, dir: Direction): boolean {
-    if (dir === Direction.UP && cell.row === 0) {
-      return false;
-    } else if (dir === Direction.RIGHT && cell.column === COLUMN_COUNT - 1) {
-      return false;
-    } else if (dir === Direction.DOWN && cell.row === ROW_COUNT - 1) {
-      return false;
-    } else if (dir === Direction.LEFT && cell.column === 0) {
-      return false;
-    }
-    return true;
   }
 
   private showGrid(): void {

@@ -38,7 +38,6 @@ describe('Game Core New Game', () => {
 
   it('should show ordered grid for shuffleCount = 0', () => {
     core.setView(testingView);
-    testingRandom.values = [Direction.RIGHT];
     core.newGame(0);
     const expectedValues = [
       [1, 2, 3, 4],
@@ -60,9 +59,10 @@ describe('Game Core New Game', () => {
 
   it('should shuffle one cell to left', () => {
     core.setView(testingView);
-    testingRandom.values = [Direction.LEFT];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
+    testingRandom.dir = [Direction.LEFT];
+    testingRandom.expectedDir = [[Direction.UP, Direction.LEFT]];
+    testingRandom.dirIndex = 0;
+    core.newGame(testingRandom.dir.length);
     const expectedValues = [
       [1, 2, 3, 4],
       [5, 6, 7, 8],
@@ -79,36 +79,25 @@ describe('Game Core New Game', () => {
         expect(testingView.setCell).toHaveBeenCalledWith(cell);
       }
     }
-  });
-
-  it('should not shuffle one cell to up', () => {
-    core.setView(testingView);
-    testingRandom.values = [Direction.UP];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
-    const expectedValues = [
-      [1, 2, 3, 4],
-      [5, 6, 7, 8],
-      [9, 10, 11, 0],
-      [13, 14, 15, 12],
-    ];
-    for (let row = 0; row < ROW_COUNT; row++) {
-      for (let col = 0; col < COLUMN_COUNT; col++) {
-        const cell: Cell = {
-          row: row as Row,
-          column: col as Column,
-          value: expectedValues[row][col] as CellValue,
-        };
-        expect(testingView.setCell).toHaveBeenCalledWith(cell);
+    const expectedDir = testingRandom.expectedDir;
+    const actualDir = testingRandom.actualDir;
+    for (let i = 0; i < expectedDir.length; i++) {
+      expect(expectedDir[i].length).toEqual(actualDir[i].length);
+      for (let j = 0; j < expectedDir[i].length; j++) {
+        expect(expectedDir[i][j]).toEqual(actualDir[i][j]);
       }
     }
   });
 
   it('should shuffle two cells to up and left', () => {
     core.setView(testingView);
-    testingRandom.values = [Direction.UP, Direction.LEFT];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
+    testingRandom.dir = [Direction.UP, Direction.LEFT];
+    testingRandom.expectedDir = [
+      [Direction.UP, Direction.LEFT],
+      [Direction.UP, Direction.DOWN, Direction.LEFT],
+    ];
+    testingRandom.dirIndex = 0;
+    core.newGame(testingRandom.dir.length);
     const expectedValues = [
       [1, 2, 3, 4],
       [5, 6, 7, 8],
@@ -125,53 +114,42 @@ describe('Game Core New Game', () => {
         expect(testingView.setCell).toHaveBeenCalledWith(cell);
       }
     }
-  });
-
-  it('should shuffle four cells to up down left left', () => {
-    core.setView(testingView);
-    testingRandom.values = [
-      Direction.UP,
-      Direction.DOWN,
-      Direction.LEFT,
-      Direction.LEFT,
-    ];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
-    const expectedValues = [
-      [1, 2, 3, 4],
-      [5, 6, 7, 8],
-      [9, 10, 11, 12],
-      [13, 0, 14, 15],
-    ];
-    for (let row = 0; row < ROW_COUNT; row++) {
-      for (let col = 0; col < COLUMN_COUNT; col++) {
-        const cell: Cell = {
-          row: row as Row,
-          column: col as Column,
-          value: expectedValues[row][col] as CellValue,
-        };
-        expect(testingView.setCell).toHaveBeenCalledWith(cell);
+    const expectedDir = testingRandom.expectedDir;
+    const actualDir = testingRandom.actualDir;
+    for (let i = 0; i < expectedDir.length; i++) {
+      expect(expectedDir[i].length).toEqual(actualDir[i].length);
+      for (let j = 0; j < expectedDir[i].length; j++) {
+        expect(expectedDir[i][j]).toEqual(actualDir[i][j]);
       }
     }
   });
 
-  it('should shuffle seven cells to up up right left down left up', () => {
+  it('should shuffle seven cells to up up left left down right left', () => {
     core.setView(testingView);
-    testingRandom.values = [
+    testingRandom.dir = [
       Direction.UP,
       Direction.UP,
-      Direction.RIGHT,
+      Direction.LEFT,
       Direction.LEFT,
       Direction.DOWN,
+      Direction.RIGHT,
       Direction.LEFT,
-      Direction.UP,
     ];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
+    testingRandom.expectedDir = [
+      [Direction.UP, Direction.LEFT],
+      [Direction.UP, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+    ];
+    testingRandom.dirIndex = 0;
+    core.newGame(testingRandom.dir.length);
     const expectedValues = [
       [1, 2, 3, 4],
-      [5, 0, 11, 7],
-      [9, 6, 10, 8],
+      [5, 10, 6, 7],
+      [9, 0, 11, 8],
       [13, 14, 15, 12],
     ];
     for (let row = 0; row < ROW_COUNT; row++) {
@@ -184,28 +162,48 @@ describe('Game Core New Game', () => {
         expect(testingView.setCell).toHaveBeenCalledWith(cell);
       }
     }
+    const expectedDir = testingRandom.expectedDir;
+    const actualDir = testingRandom.actualDir;
+    for (let i = 0; i < expectedDir.length; i++) {
+      expect(expectedDir[i].length).toEqual(actualDir[i].length);
+      for (let j = 0; j < expectedDir[i].length; j++) {
+        expect(expectedDir[i][j]).toEqual(actualDir[i][j]);
+      }
+    }
   });
 
-  it('should shuffle ten cells to down right left up up up up left left left', () => {
+  it('should shuffle ten cells to left up left up right right down left left up', () => {
     core.setView(testingView);
-    testingRandom.values = [
-      Direction.DOWN,
+    testingRandom.dir = [
+      Direction.LEFT,
+      Direction.UP,
+      Direction.LEFT,
+      Direction.UP,
       Direction.RIGHT,
-      Direction.LEFT,
-      Direction.UP,
-      Direction.UP,
-      Direction.UP,
-      Direction.UP,
+      Direction.RIGHT,
+      Direction.DOWN,
       Direction.LEFT,
       Direction.LEFT,
-      Direction.LEFT,
+      Direction.UP,
     ];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
+    testingRandom.expectedDir = [
+      [Direction.UP, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+      [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT],
+    ];
+    testingRandom.dirIndex = 0;
+    core.newGame(testingRandom.dir.length);
     const expectedValues = [
-      [0, 1, 2, 4],
-      [5, 6, 3, 8],
-      [9, 10, 7, 12],
+      [1, 2, 3, 4],
+      [5, 0, 8, 12],
+      [9, 7, 6, 10],
       [13, 14, 11, 15],
     ];
     for (let row = 0; row < ROW_COUNT; row++) {
@@ -216,6 +214,14 @@ describe('Game Core New Game', () => {
           value: expectedValues[row][col] as CellValue,
         };
         expect(testingView.setCell).toHaveBeenCalledWith(cell);
+      }
+    }
+    const expectedDir = testingRandom.expectedDir;
+    const actualDir = testingRandom.actualDir;
+    for (let i = 0; i < expectedDir.length; i++) {
+      expect(expectedDir[i].length).toEqual(actualDir[i].length);
+      for (let j = 0; j < expectedDir[i].length; j++) {
+        expect(expectedDir[i][j]).toEqual(actualDir[i][j]);
       }
     }
   });
@@ -305,9 +311,9 @@ describe('Game Core Click Cell ShuffleCount = 3', () => {
     testingRandom = new RandomTest();
     core = new Core(testingRandom);
     core.setView(testingView);
-    testingRandom.values = [Direction.LEFT, Direction.UP, Direction.LEFT];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
+    testingRandom.dir = [Direction.LEFT, Direction.UP, Direction.LEFT];
+    testingRandom.dirIndex = 0;
+    core.newGame(testingRandom.dir.length);
     spy.calls.reset();
   });
 
@@ -392,9 +398,9 @@ describe('Game Core Finish Game ShuffleCount = 0', () => {
     testingRandom = new RandomTest();
     core = new Core(testingRandom);
     core.setView(testingView);
-    testingRandom.values = [];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
+    testingRandom.dir = [];
+    testingRandom.dirIndex = 0;
+    core.newGame(testingRandom.dir.length);
     spySetCell.calls.reset();
   });
 
@@ -448,15 +454,15 @@ describe('Game Core Finish Game ShuffleCount = 5', () => {
     testingRandom = new RandomTest();
     core = new Core(testingRandom);
     core.setView(testingView);
-    testingRandom.values = [
+    testingRandom.dir = [
       Direction.LEFT,
       Direction.UP,
       Direction.LEFT,
       Direction.UP,
       Direction.RIGHT,
     ];
-    testingRandom.valuesIndex = 0;
-    core.newGame(testingRandom.values.length);
+    testingRandom.dirIndex = 0;
+    core.newGame(testingRandom.dir.length);
   });
 
   it('should finish game after backward clicks', () => {
