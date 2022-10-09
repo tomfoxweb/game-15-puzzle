@@ -46,4 +46,10 @@ export class PuzzleComponent implements OnInit, Viewable {
   clickCell(row: Row, column: Column): void {
     this.controller.clickCell(row, column);
   }
+
+  finishGame(): void {
+    window.setTimeout(() => {
+      window.alert('Congratulations!');
+    }, 200);
+  }
 }

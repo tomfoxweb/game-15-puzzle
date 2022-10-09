@@ -57,6 +57,23 @@ export class Core implements Modellable {
     this.freeCell = newFreeCell;
     this.view.setCell(shiftedCell);
     this.view.setCell(newFreeCell);
+    if (this.isGameFinished()) {
+      this.view.finishGame();
+    }
+  }
+
+  private isGameFinished(): boolean {
+    const valueIterator = CellValues[Symbol.iterator]();
+    for (const row of RowValues) {
+      for (const column of ColumnValues) {
+        const value = valueIterator.next().value;
+        const cell: Cell = { row, column, value };
+        if (this.grid[row][column].value !== value) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   private initGrid(): void {

@@ -8,6 +8,8 @@ class TestViewable implements Viewable {
   setCell(cell: Cell): void {}
 
   clickCell(row: Row, column: Column): void {}
+
+  finishGame(): void {}
 }
 
 describe('Game Core New Game', () => {
@@ -373,5 +375,96 @@ describe('Game Core Click Cell ShuffleCount = 3', () => {
     expect(testingView.setCell).toHaveBeenCalledTimes(2);
     expect(testingView.setCell).toHaveBeenCalledWith(newFreeCell);
     expect(testingView.setCell).toHaveBeenCalledWith(prevFreeCell);
+  });
+});
+
+describe('Game Core Finish Game ShuffleCount = 0', () => {
+  let core: Core;
+  let testingView: Viewable;
+  let testingRandom: RandomTest;
+  let spySetCell: any;
+  let spyFinishGame: any;
+
+  beforeEach(async () => {
+    testingView = new TestViewable();
+    spySetCell = spyOn(testingView, 'setCell');
+    spyFinishGame = spyOn(testingView, 'finishGame');
+    testingRandom = new RandomTest();
+    core = new Core(testingRandom);
+    core.setView(testingView);
+    testingRandom.values = [];
+    testingRandom.valuesIndex = 0;
+    core.newGame(testingRandom.values.length);
+    spySetCell.calls.reset();
+  });
+
+  it('should finish game after click row 3 column 2', () => {
+    core.clickCell(3, 2);
+    let newFreeCell: Cell = { row: 3, column: 2, value: 0 };
+    let prevFreeCell: Cell = { row: 3, column: 3, value: 15 };
+    expect(testingView.setCell).toHaveBeenCalledTimes(2);
+    expect(testingView.setCell).toHaveBeenCalledWith(newFreeCell);
+    expect(testingView.setCell).toHaveBeenCalledWith(prevFreeCell);
+    spySetCell.calls.reset();
+    core.clickCell(3, 3);
+    newFreeCell = { row: 3, column: 3, value: 0 };
+    prevFreeCell = { row: 3, column: 2, value: 15 };
+    expect(testingView.setCell).toHaveBeenCalledTimes(2);
+    expect(testingView.setCell).toHaveBeenCalledWith(newFreeCell);
+    expect(testingView.setCell).toHaveBeenCalledWith(prevFreeCell);
+    expect(testingView.finishGame).toHaveBeenCalled();
+  });
+
+  it('should finish game after clicks on column 3 up', () => {
+    core.clickCell(2, 3);
+    core.clickCell(1, 3);
+    core.clickCell(0, 3);
+    core.clickCell(1, 3);
+    core.clickCell(2, 3);
+    core.clickCell(3, 3);
+    expect(testingView.finishGame).toHaveBeenCalled();
+  });
+
+  it('should finish game after clicks on row 3 left', () => {
+    core.clickCell(3, 2);
+    core.clickCell(3, 1);
+    core.clickCell(3, 0);
+    core.clickCell(3, 1);
+    core.clickCell(3, 2);
+    core.clickCell(3, 3);
+    expect(testingView.finishGame).toHaveBeenCalled();
+  });
+});
+
+describe('Game Core Finish Game ShuffleCount = 5', () => {
+  let core: Core;
+  let testingView: Viewable;
+  let testingRandom: RandomTest;
+  let spyFinishGame: any;
+
+  beforeEach(async () => {
+    testingView = new TestViewable();
+    spyFinishGame = spyOn(testingView, 'finishGame');
+    testingRandom = new RandomTest();
+    core = new Core(testingRandom);
+    core.setView(testingView);
+    testingRandom.values = [
+      Direction.LEFT,
+      Direction.UP,
+      Direction.LEFT,
+      Direction.UP,
+      Direction.RIGHT,
+    ];
+    testingRandom.valuesIndex = 0;
+    core.newGame(testingRandom.values.length);
+  });
+
+  it('should finish game after backward clicks', () => {
+    core.clickCell(1, 1);
+    core.clickCell(2, 1);
+    core.clickCell(2, 2);
+    core.clickCell(3, 2);
+    core.clickCell(3, 3);
+    expect(testingView.finishGame).toHaveBeenCalled();
   });
 });
