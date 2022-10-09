@@ -23,7 +23,7 @@ export class Core implements Modellable {
   constructor(randomizer: Randomable) {
     this.randomizer = randomizer;
     this.initGrid();
-    this.freeCell = { row: 0, column: 0, value: 0 };
+    this.freeCell = { row: 3, column: 3, value: 0 };
   }
 
   setView(view: Viewable): void {
@@ -59,8 +59,6 @@ export class Core implements Modellable {
     this.view.setCell(newFreeCell);
   }
 
-  private shiftCell(row: Row, column: Column): void {}
-
   private initGrid(): void {
     const valueIterator = CellValues[Symbol.iterator]();
     for (const row of RowValues) {
@@ -86,7 +84,7 @@ export class Core implements Modellable {
   }
 
   private shuffleGrid(shuffleCount: number): void {
-    let freeCell: Cell = { row: 0, column: 0, value: 0 };
+    let freeCell: Cell = { row: 3, column: 3, value: 0 };
     const f = new Map<number, number>();
     for (let i = 0; i < shuffleCount; i++) {
       const direction = this.randomizer.randomInteger(0, 3) as Direction;
