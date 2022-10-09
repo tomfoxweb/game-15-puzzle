@@ -16,4 +16,24 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.documentTitle.setTitle(this.title);
   }
+
+  decrementShuffleCount(
+    inputElement: HTMLInputElement,
+    outputElement: HTMLOutputElement
+  ) {
+    let value = Number(inputElement.value);
+    value--;
+    inputElement.value = value.toString();
+    outputElement.value = inputElement.value;
+  }
+
+  incrementShuffleCount(
+    inputElement: HTMLInputElement,
+    outputElement: HTMLOutputElement
+  ) {
+    let value = Number(inputElement.value);
+    value++;
+    inputElement.value = value.toString();
+    outputElement.value = inputElement.value;
+  }
 }

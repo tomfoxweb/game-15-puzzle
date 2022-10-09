@@ -28,11 +28,11 @@ export class ControllerService {
     this.model.setView(this.view);
   }
 
-  newGame(): void {
+  newGame(shuffleCount: number): void {
     if (this.view === undefined) {
       throw new NullViewableError();
     }
-    this.model.newGame(1000);
+    this.model.newGame(shuffleCount);
   }
 
   clickCell(row: Row, column: Column): void {

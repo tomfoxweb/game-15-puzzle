@@ -16,4 +16,52 @@ $content-max-width: 600px;
   .new-game {
     padding: 1em;
   }
+
+  .shuffle-container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: repeat(3, auto);
+    gap: 0.2em;
+
+    label,
+    output {
+      justify-self: center;
+    }
+
+    button {
+      font-family: "Courier New", Courier, monospace;
+      padding: 1em;
+      aspect-ratio: 1;
+      justify-self: center;
+      align-self: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .button-decrement {
+      grid-row: 1 / 4;
+      grid-column: 1;
+    }
+
+    label {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    input {
+      grid-row: 2;
+      grid-column: 2;
+    }
+
+    .button-increment {
+      grid-row: 1 / 4;
+      grid-column: 3;
+    }
+
+    output {
+      grid-row: 3;
+      grid-column: 2;
+    }
+  }
 }

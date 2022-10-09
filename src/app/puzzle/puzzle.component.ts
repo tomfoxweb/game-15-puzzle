@@ -31,11 +31,11 @@ export class PuzzleComponent implements OnInit, Viewable {
       }
     }
     this.controller.setView(this);
-    this.controller.newGame();
+    this.controller.newGame(500);
   }
 
-  newGame(): void {
-    this.controller.newGame();
+  newGame(shuffleCount: string): void {
+    this.controller.newGame(Number(shuffleCount));
   }
 
   setCell(cell: Readonly<Cell>): void {
