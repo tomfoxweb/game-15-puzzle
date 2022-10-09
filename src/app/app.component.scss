@@ -6,7 +6,18 @@ $content-max-width: 600px;
 
   display: grid;
   grid-template-columns: auto;
-  gap: 1em;
+  gap: 1.5em;
+
+  color: DarkOliveGreen;
+
+  button {
+    color: DarkOliveGreen;
+    background-color: floralwhite;
+    border: 1px solid green;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px 1px seagreen;
+    cursor: pointer;
+  }
 
   .title,
   .new-game {
@@ -14,7 +25,13 @@ $content-max-width: 600px;
   }
 
   .new-game {
-    padding: 1em;
+    font-size: 1rem;
+    padding: 1em 1.5em;
+
+    &:active {
+      color: white;
+      background-color: darkseagreen;
+    }
   }
 
   .shuffle-container {
@@ -26,10 +43,12 @@ $content-max-width: 600px;
     label,
     output {
       justify-self: center;
+      font-size: 1rem;
     }
 
     button {
       font-family: "Courier New", Courier, monospace;
+      font-size: 1rem;
       padding: 1em;
       aspect-ratio: 1;
       justify-self: center;
@@ -37,6 +56,11 @@ $content-max-width: 600px;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      &:active {
+        color: white;
+        background-color: darkseagreen;
+      }
     }
 
     .button-decrement {

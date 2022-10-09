@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  documentTitle: 'Game 15 Puzzles',
-  title: 'Game 15 Puzzles',
+  documentTitle: 'Game 15 Puzzle',
+  title: 'Game 15 Puzzle',
   buttonNewGameCaption: 'New Game',
   isTest: false,
 };
